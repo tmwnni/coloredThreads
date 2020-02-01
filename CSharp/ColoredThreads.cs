@@ -1,3 +1,6 @@
+/*
+	This program uses the Task pattern rather than threads
+*/
 using System;
 using System.Linq;
 using System.Threading;
@@ -14,33 +17,40 @@ class Program
 	public static void RecursiveThing(int number, ConsoleColor color)
 	{
 		// Check number
-		if(number >= 0)
+		if (number < 0)
 		{
-			// Print to screen
-			lock(_consoleLock)
-			{
-				Console.ForegroundColor = color;
-				Console.WriteLine($"{color} thread, number is {number}.");
-				Console.ForegroundColor = ConsoleColor.Gray;
-			}
-
-			// Wait random time
-			Thread.Sleep(_random.Next(1, 10)*1000);
-
-			// Call RecursiveThing
-			RecursiveThing(number - 1, color);
+			ColoredConsoleMesssage($"{color} thread complete!", color);
+			return;
 		}
+
+		// Print to screen
+		ColoredConsoleMesssage($"{color} thread, number is {number}.", color);
+
+		// Wait random time
+		Thread.Sleep(_random.Next(1, 10) * 1000);
+
+		// Call RecursiveThing
+		RecursiveThing(number - 1, color);
 	}
 
 	// Async wrapper for RecursiveThing()
-	public static Task RecursiveThingAsync(int number, ConsoleColor color)
+	public static Task RecursiveThingAsync(int number, ConsoleColor color) =>
+		Task.Run(() => RecursiveThing(number, color));
+
+	// Lock the console and write the message with desired color
+	public static void ColoredConsoleMesssage(string message, ConsoleColor color)
 	{
-		return Task.Run(() => RecursiveThing(number, color));
+		lock(_consoleLock)
+		{
+			Console.ForegroundColor = color;
+			Console.WriteLine(message);
+			Console.ForegroundColor = ConsoleColor.Gray;
+		}
 	}
 
 	// Main thread
 	public static void Main()
-	{		
+	{
 		// Setup colors
 		ConsoleColor[] colors =
 		{

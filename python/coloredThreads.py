@@ -9,7 +9,7 @@ def RecursiveThing(number, color):
 	if number >= 0:
 		print colored('{} thread, number is {}.'.format(color, number), color)
 		time.sleep(randint(0,9))
-		RecursiveThing(number-1, color)
+		RecursiveThing(number - 1, color)
 	else:
 		print colored('{} thread complete!'.format(color), color)
 	
