@@ -56,13 +56,15 @@ void coloredConsoleMessage(int color, char message[]) {
 
 void recursiveThing(int number, int color) {
     char message[80];
-    sprintf(message, "%s thread, number is: %d\n", colorCodeToName(color), number);
+    char* colorName = colorCodeToName(color);
+    sprintf(message, "%s thread, number is: %d\n", colorName, number);
     coloredConsoleMessage(color, message);
     srand(GetCurrentThreadId());
     Sleep((rand() % 10) * 1000);
 
     if (number == 0) {
-        coloredConsoleMessage(color, "Thread complete!\n");
+        sprintf(message, "%s thread complete!\n", colorName);
+        coloredConsoleMessage(color, message);
         return;
     }
 
