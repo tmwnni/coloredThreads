@@ -18,10 +18,9 @@ let colorName color =
 
 let coloredConsoleMessage color message =
     lock consoleLock (fun () ->
-    Console.ForegroundColor <- color
-    printf "%s\n" message
-    Console.ForegroundColor <- ConsoleColor.Gray
-    )
+        Console.ForegroundColor <- color
+        printf "%s\n" message
+        Console.ForegroundColor <- ConsoleColor.Gray )
 
 let rec recursiveThing number color =
     coloredConsoleMessage color (sprintf "%s thread, number is %d" (colorName color) number)
