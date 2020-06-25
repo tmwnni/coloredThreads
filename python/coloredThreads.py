@@ -6,12 +6,13 @@ from termcolor import colored
 from random import randint
 
 def RecursiveThing(number, color):
-	if number >= 0:
-		print colored('{} thread, number is {}.'.format(color, number), color)
-		time.sleep(randint(0,9))
-		RecursiveThing(number - 1, color)
-	else:
+	print colored('{} thread, number is {}.'.format(color, number), color)
+	time.sleep(randint(0,9))
+	
+	if number == 0:
 		print colored('{} thread complete!'.format(color), color)
+	else:
+		RecursiveThing(number - 1, color)
 	
 colors = ['green','blue','yellow','red','cyan']
 threads = []
