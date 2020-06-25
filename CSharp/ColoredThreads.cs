@@ -14,20 +14,19 @@ class Program
 	public static Random _random = new Random();
 	
 	// Recursive thing!
-	public static void RecursiveThing(int number, ConsoleColor color)
-	{
-		// Check number
-		if (number < 0)
-		{
-			ColoredConsoleMesssage($"{color} thread complete!", color);
-			return;
-		}
-
-		// Print to screen
+	public static void RecursiveThing(ushort number, ConsoleColor color)
+	{	// Print to screen
 		ColoredConsoleMesssage($"{color} thread, number is {number}.", color);
 
 		// Wait random time
 		Thread.Sleep(_random.Next(1, 10) * 1000);
+		
+		// Check number
+		if (number == 0)
+		{
+			ColoredConsoleMesssage($"{color} thread complete!", color);
+			return;
+		}
 
 		// Call RecursiveThing
 		RecursiveThing(number - 1, color);
