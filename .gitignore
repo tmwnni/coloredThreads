@@ -1,3 +1,4 @@
-CSharp/*.exe
+*.exe
 .vscode/
 .ionide/
+.fake
