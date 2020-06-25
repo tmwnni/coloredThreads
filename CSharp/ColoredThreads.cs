@@ -23,13 +23,10 @@ class Program
 		
 		// Check number
 		if (number == 0)
-		{
 			ColoredConsoleMesssage($"{color} thread complete!", color);
-			return;
-		}
-
-		// Call RecursiveThing
-		RecursiveThing(number - 1, color);
+		else
+			// Call RecursiveThing
+			RecursiveThing(number - 1, color);
 	}
 
 	// Async wrapper for RecursiveThing()
