@@ -5,29 +5,34 @@
 #include <windows.h>
 
 #define MAX_COLORS 5
+#define GREEN 2
+#define BLUE 1
+#define YELLOW 14
+#define RED 4
+#define CYAN 3
 
 HANDLE consoleMutex;
 
 typedef struct recursiveData {
     int number;
     int color;
-} RDATA, *PRDATA;
+} ARGS, *PARGS;
 
 char* colorCodeToName(int color) {
     switch(color) {
-        case 2:
+        case GREEN:
             return "Green";
             break;
-        case 1:
+        case BLUE:
             return "Blue";
             break;
-        case 14:
+        case YELLOW:
             return "Yellow";
             break;
-        case 4:
+        case RED:
             return "Red";
             break;
-        case 3:
+        case CYAN:
             return "Cyan";
             break;
         default:
@@ -42,7 +47,7 @@ void coloredConsoleMessage(int color, char message[]) {
         case WAIT_OBJECT_0:
             HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(handle, color);
-            printf(message);
+            printf("%s", message);
             SetConsoleTextAttribute(handle, 7);
             break;
         case WAIT_ABANDONED:
@@ -72,19 +77,19 @@ void recursiveThing(int number, int color) {
 }
 
 DWORD recursiveThingAsync(LPVOID lpParam) {
-    PRDATA args;
-    args = (PRDATA)lpParam;
+    PARGS args;
+    args = (PARGS)lpParam;
     recursiveThing(args->number, args->color);
     return 0;
 }
 
 int main() {
     int colors[MAX_COLORS] = {
-        2,  // Green
-        1,  // Blue
-        14, // Yellow
-        4,  // Red
-        3   // Cyan
+        GREEN,  // Green
+        BLUE,  // Blue
+        YELLOW, // Yellow
+        RED,  // Red
+        CYAN   // Cyan
     };
 
     consoleMutex = CreateMutex(
@@ -95,10 +100,10 @@ int main() {
 
     DWORD threadIDs[MAX_COLORS];
     HANDLE tasks[MAX_COLORS];
-    PRDATA args[MAX_COLORS];
+    PARGS args[MAX_COLORS];
 
     for (int i=0; i < MAX_COLORS; i++) {
-        args[i] = (PRDATA)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(RDATA));
+        args[i] = (PARGS)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(ARGS));
 
         if (args[i] == NULL)
             ExitProcess(2);
