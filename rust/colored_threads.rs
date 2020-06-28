@@ -28,11 +28,7 @@ fn main() {
 
     let handles: Vec<thread::JoinHandle<_>> = colors
         .iter()
-        .map(|&color| {
-            std::thread::spawn(move || {
-                recursive_thing(10, color)
-            })
-        })
+        .map(|&color| std::thread::spawn(move || recursive_thing(10, color)))
         .collect();
 
     for thread in handles {
